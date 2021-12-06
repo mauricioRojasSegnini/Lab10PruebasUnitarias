@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Laboratorio10_PruebasUnitarias;
 using Laboratorio10_PruebasUnitarias.Controllers;
 using Laboratorio10_PruebasUnitarias.Models;
+using Laboratorio10_PruebasUnitarias.Handlers;
 
 namespace Laboratorio10_PruebasUnitarias.Tests.Controllers
 {
@@ -88,7 +89,7 @@ namespace Laboratorio10_PruebasUnitarias.Tests.Controllers
         }
 
         [TestMethod]
-        public void ListadoDePlanetasCantidadDePlanetasEsCorrecta()
+        public void TestCantidadDePlanetasEsCorrecta()
         {
             //Arrange
             int numeroPlanetas = 8;
@@ -99,7 +100,48 @@ namespace Laboratorio10_PruebasUnitarias.Tests.Controllers
             Assert.AreEqual(numeroPlanetas, vista.ViewBag.planetas.Count);
         }
 
+        [TestMethod]
 
+        public void TestCrearPlanetaNoValido() {
+            PlanetaModel nuevoPlaneta = new PlanetaModel();
+            nuevoPlaneta.nombre = "Nuevo planeta";
+            nuevoPlaneta.numeroAnillos = -1111;
+            nuevoPlaneta.tipoArchivo = "";
+            nuevoPlaneta.tipo = "";
+            PlanetasController planetasController = new PlanetasController();
+            //Act
+            ViewResult vista = planetasController.crearPlaneta(nuevoPlaneta) as ViewResult;
+            //Assert
+            Assert.IsNull(vista.Model);
+        }
+        [TestMethod]
+        public void TestCrearPlanetaValido()
+        {
+            PlanetaModel nuevoPlaneta = new PlanetaModel();
+            nuevoPlaneta.nombre = "Nuevo planeta";
+            nuevoPlaneta.numeroAnillos = 5;
+            nuevoPlaneta.tipoArchivo = "planeta";
+            nuevoPlaneta.tipo = "rocoso";
+            PlanetasController planetasController = new PlanetasController();
+            //Act
+            ViewResult vista = planetasController.crearPlaneta(nuevoPlaneta) as ViewResult;
+            //Assert
+            Assert.IsNotNull(vista);
+        }
+
+        [TestMethod]
+        public void TestEditarPlanetaNumeroAnillosEsCorrecto()
+        {
+            //Arrange
+            int id = 1;
+            int numeroDeAnillos = 10;
+            PlanetasController planetasController = new PlanetasController();
+            //Act
+            ViewResult vista = planetasController.editarPlaneta(id) as ViewResult;
+            PlanetaModel planeta = vista.Model as PlanetaModel;
+            //Assert
+            Assert.AreNotEqual(numeroDeAnillos, planeta.numeroAnillos);
+        }
     }
 
 }

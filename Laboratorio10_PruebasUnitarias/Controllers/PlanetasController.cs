@@ -34,6 +34,7 @@ namespace Laboratorio10_PruebasUnitarias.Controllers
                     if (ViewBag.ExitoAlCrear)
                     {
                         ViewBag.Message = "El planeta" + " " + planeta.nombre + " fue creado con éxito:)";
+                        
                         ModelState.Clear();
                     }
                 }
@@ -94,6 +95,7 @@ namespace Laboratorio10_PruebasUnitarias.Controllers
             var tupla = accesoDatos.descargarContenido(identificador);
             return File(tupla.Item1, tupla.Item2);
         }
+
 
     }
 }
